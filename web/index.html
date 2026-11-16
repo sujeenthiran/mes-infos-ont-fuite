@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mes infos ont fuité ?</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕵️</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="fond" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <header class="entete">
+    <div class="marque">
+      <div class="logo">🕵️</div>
+      <div>
+        <h1>Mes infos ont fuité&nbsp;?</h1>
+        <p>Découvre si tes données circulent chez les pirates, et quoi faire.</p>
+      </div>
+    </div>
+    <div class="badge-prive" title="L'outil tourne sur ton ordinateur">🔒 100 % local · aucun compte · aucun pistage</div>
+  </header>
+
+  <nav class="onglets" role="tablist">
+    <button class="onglet actif" data-vue="email" role="tab">📧 Mon e-mail</button>
+    <button class="onglet" data-vue="mdp" role="tab">🔑 Mon mot de passe</button>
+    <button class="onglet" data-vue="reflexes" role="tab">🛡️ Les bons réflexes</button>
+    <button class="onglet" data-vue="historique" role="tab">🕓 Historique</button>
+  </nav>
+
+  <main>
+    <!-- ============================ E-MAIL ============================ -->
+    <section class="vue active" id="vue-email">
+      <div class="carte recherche">
+        <h2>Ton adresse e-mail a-t-elle fuité&nbsp;?</h2>
+        <p class="doux">On compare ton adresse avec plus de 900 fuites de données connues (sites piratés, bases revendues).</p>
+        <form id="form-email" class="ligne-saisie" autocomplete="on">
+          <input id="email" type="email" inputmode="email" placeholder="ton.adresse@exemple.fr" required autocomplete="email">
+          <button class="btn principal" type="submit"><span>Vérifier</span> 🔍</button>
+        </form>
+        <div class="options">
+          <label class="interrupteur"><input type="checkbox" id="garder" checked><span></span> Garder dans l'historique (sur ce PC)</label>
+          <button class="lien" id="btn-famille" type="button">👨‍👩‍👧 Vérifier plusieurs adresses (famille)</button>
+          <button class="lien" id="btn-demo" type="button">🎬 Essayer avec un exemple</button>
+        </div>
+        <div id="zone-famille" class="cache">
+          <textarea id="emails-famille" rows="4" placeholder="Une adresse par ligne (5 maximum)&#10;papa@exemple.fr&#10;maman@exemple.fr"></textarea>
+          <button class="btn secondaire" id="btn-verif-famille" type="button">Vérifier toutes les adresses</button>
+        </div>
+      </div>
+
+      <div id="chargement" class="carte chargement cache">
+        <div class="radar"><span></span></div>
+        <p>Recherche dans les fuites connues…</p>
+      </div>
+      <div id="erreur" class="carte erreur cache"></div>
+      <div id="famille-resultats" class="cache"></div>
+      <div id="resultat" class="cache"></div>
+    </section>
+
+    <!-- ========================== MOT DE PASSE ========================== -->
+    <section class="vue" id="vue-mdp">
+      <div class="carte recherche">
+        <h2>Ton mot de passe est-il connu des pirates&nbsp;?</h2>
+        <p class="doux">On le compare à plus de <b>900 millions</b> de mots de passe déjà volés.
+          <b>Ton mot de passe ne quitte jamais ton ordinateur</b> : voir l'explication plus bas.</p>
+        <form id="form-mdp" class="ligne-saisie" autocomplete="off">
+          <div class="champ-mdp">
+            <input id="mdp" type="password" placeholder="Tape un mot de passe" autocomplete="off" spellcheck="false">
+            <button type="button" class="oeil" id="oeil" aria-label="Afficher le mot de passe">👁️</button>
+          </div>
+          <button class="btn principal" type="submit">Vérifier 🔍</button>
+        </form>
+        <div class="force">
+          <div class="force-barre"><span id="force-remplissage"></span></div>
+          <div class="force-texte"><b id="force-titre">—</b> <span id="force-detail" class="doux"></span></div>
+          <ul id="force-conseils" class="conseils-mdp"></ul>
+        </div>
+      </div>
+      <div id="mdp-resultat" class="cache"></div>
+
+      <div class="grille-2">
+        <div class="carte">
+          <h3>🎲 Générer une phrase de passe solide</h3>
+          <p class="doux">Facile à retenir, très difficile à deviner. Créée au hasard sur ton PC.</p>
+          <div class="phrase" id="phrase">—</div>
+          <div class="rangee">
+            <button class="btn secondaire" id="btn-phrase" type="button">🎲 Nouvelle</button>
+            <button class="btn secondaire" id="btn-copier" type="button">📋 Copier</button>
+            <label class="doux petit">Mots&nbsp;: <select id="nb-mots"><option>4</option><option selected>5</option><option>6</option></select></label>
+          </div>
+        </div>
+        <div class="carte">
+          <h3>🔐 Comment ton mot de passe reste secret</h3>
+          <ol class="etapes">
+            <li>Ton navigateur transforme le mot de passe en empreinte (SHA-1)&nbsp;: <code id="demo-hash">5BAA6 1E4C9B93F3F…</code></li>
+            <li>Seuls les <b>5 premiers caractères</b> sont envoyés au service Have I Been Pwned.</li>
+            <li>Il renvoie des centaines d'empreintes qui commencent pareil.</li>
+            <li>La comparaison finale se fait <b>chez toi</b>. Personne ne sait quel mot de passe tu as testé.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ RÉFLEXES ============================ -->
+    <section class="vue" id="vue-reflexes">
+      <div class="carte">
+        <h2>🛡️ 10 réflexes pour être protégé, même en cas de fuite</h2>
+        <p class="doux">Coche au fur et à mesure. Ta progression est gardée sur ce PC.</p>
+        <div class="progression"><div id="reflexes-barre"></div></div>
+        <p class="petit doux" id="reflexes-texte"></p>
+      </div>
+      <div id="liste-reflexes" class="liste-reflexes"></div>
+      <div class="carte urgence">
+        <h3>🚨 Victime d'une arnaque ou d'un piratage&nbsp;?</h3>
+        <div class="grille-liens">
+          <a href="https://www.cybermalveillance.gouv.fr/diagnostic/accueil" target="_blank" rel="noopener noreferrer">🧭 <b>Cybermalveillance.gouv.fr</b><span>Diagnostic et aide gratuite</span></a>
+          <a href="https://www.33700.fr/" target="_blank" rel="noopener noreferrer">📱 <b>33700</b><span>Signaler un SMS ou appel d'arnaque</span></a>
+          <a href="https://www.internet-signalement.gouv.fr/" target="_blank" rel="noopener noreferrer">🛑 <b>Pharos</b><span>Signaler un contenu illicite, un chantage</span></a>
+          <a href="https://www.service-public.fr/particuliers/vosdroits/F2004" target="_blank" rel="noopener noreferrer">💳 <b>Fraude à la carte</b><span>Faire opposition, se faire rembourser</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================== HISTORIQUE =========================== -->
+    <section class="vue" id="vue-historique">
+      <div class="carte">
+        <div class="rangee espace">
+          <h2>🕓 Tes vérifications</h2>
+          <button class="btn danger" id="btn-vider" type="button">🗑️ Tout effacer</button>
+        </div>
+        <p class="doux">Gardé uniquement dans le dossier <code>donnees/</code> de l'outil, sur ce PC. Revérifie tous les 3 mois : on te signalera les nouvelles fuites.</p>
+        <div id="liste-historique"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pied">
+    <p>Sources&nbsp;: <a href="https://xposedornot.com" target="_blank" rel="noopener noreferrer">XposedOrNot</a> (fuites par e-mail, gratuit) ·
+      <a href="https://haveibeenpwned.com/Passwords" target="_blank" rel="noopener noreferrer">Have I Been Pwned</a> (mots de passe, k-anonymat).
+      Aucune base n'est parfaite&nbsp;: « aucune fuite » ne veut pas dire « aucun risque ».</p>
+    <p class="petit">Mes infos ont fuité&nbsp;? <span id="version"></span> · logiciel libre (licence MIT)</p>
+  </footer>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
